@@ -161,7 +161,7 @@
       margin-bottom: 15px;
     }
     
-    /* Touch controls - MOVED TO CENTER SIDES */
+    /* Touch controls - CENTER SIDES */
     #touchControls {
       position: fixed;
       top: 50%; /* Center Vertically */
@@ -277,7 +277,7 @@
             const num = parts[0];
             const den = parts[1];
             
-            ctx.font = "bold " + (fontSize * 0.85) + "px Arial"; // Slightly smaller for fractions
+            ctx.font = "bold " + (fontSize * 0.85) + "px Arial"; 
             const numMetrics = ctx.measureText(num);
             const denMetrics = ctx.measureText(den);
             const maxWidth = Math.max(numMetrics.width, denMetrics.width);
@@ -524,7 +524,6 @@
         } else {
             // --- TYPE 3: Division (Index Law) ---
             // Fraction: (A * x^p1 * y^p2) / (B * x^p3)
-            // Let's keep it to single variable for clarity on mobile: 6x^5 / 2x^2
             
             let divisorC = Math.floor(Math.random() * 4) + 2; // 2 to 5
             let multiplier = Math.floor(Math.random() * 4) + 1; // 1 to 4
@@ -541,12 +540,10 @@
             pDiff = pTop - pBottom;
 
             // Setup Question strings
-            // Need to form a vertical fraction for the question string if possible, 
-            // or use division symbol ÷
+            // Need to form a vertical fraction for the question string if possible
             let tTop = fmt(dividendC, v, pTop);
             let tBot = fmt(divisorC, v, pBottom);
             
-            // If we want formal question, we can use _over_ for the question display too!
             this.mathQuestion = `${tTop}_over_${tBot}`;
 
             // Calculate Answer
@@ -921,7 +918,12 @@
                   player.bloodDelta(1);
                   game.generateMathProblem();
               } else {
+                  // WRONG ANSWER LOGIC
                   player.bloodDelta(-1);
+                  
+                  // *** FLASH RED ***
+                  game.hurt = 1; 
+                  TweenMax.to(game, 0.2, { hurt: 0 });
               }
               this.label = null; // Remove label after hitting
           }
